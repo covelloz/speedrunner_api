@@ -1,3 +1,4 @@
+from speedrunner_api import app
 from speedrunner_api import run_app
 from speedrunner_api.config import config
 

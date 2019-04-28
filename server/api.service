@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve speedrunner_api
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/vagrant
+Environment="PATH=/opt/conda/envs/speedrunner/bin"
+ExecStart=/opt/conda/envs/speedrunner/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 main:app
+
+[Install]
+WantedBy=multi-user.target
