@@ -1,6 +1,13 @@
+# environment variables
+echo "FLASK_APP=main.py" | sudo tee -a /etc/environment > /dev/null
+export DEBIAN_FRONTEND=noninteractive
 # install nginx
 apt-get -y update
 apt-get -y install nginx
+apt-get -y install mysql-server
+# configure mysql
+mysql -u root < /vagrant/sql/create_account.sql
+mysql -u root < /vagrant/sql/create_database.sql
 # install conda
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda

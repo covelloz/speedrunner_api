@@ -1,3 +1,6 @@
+CREATE DATABASE speedruns;
+USE speedruns;
+
 CREATE TABLE `Game`
 (
   `game_id` int PRIMARY KEY,
