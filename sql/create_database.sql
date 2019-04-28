@@ -39,7 +39,9 @@ CREATE TABLE `SpeedRun`
   `speedrun_id` int PRIMARY KEY,
   `game_id` int,
   `player_id` int,
-  `duration` time
+  `duration` time,
+  `create_date` datetime,
+  `modify_date` datetime
 );
 
 ALTER TABLE `GameCategoryMap` ADD FOREIGN KEY (`game_id`) REFERENCES `Game` (`game_id`);
