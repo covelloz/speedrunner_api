@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
-from sqlalchemy import create_engine
 from sqlalchemy import MetaData
+from sqlalchemy import create_engine
 from speedrunner_api.config import config
 
 
