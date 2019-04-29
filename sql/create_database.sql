@@ -1,17 +1,17 @@
-CREATE DATABASE speedruns;
-USE speedruns;
+CREATE DATABASE speedrunner;
+USE speedrunner;
 
-CREATE TABLE `Game`
+CREATE TABLE `Games`
 (
-  `game_id` int PRIMARY KEY,
+  `game_id` int AUTO_INCREMENT PRIMARY KEY,
   `game` varchar(255),
   `create_date` datetime,
   `modify_date` datetime
 );
 
-CREATE TABLE `Category`
+CREATE TABLE `Categories`
 (
-  `category_id` int PRIMARY KEY,
+  `category_id` int AUTO_INCREMENT PRIMARY KEY,
   `category` varchar(255),
   `create_date` datetime,
   `modify_date` datetime
@@ -19,24 +19,24 @@ CREATE TABLE `Category`
 
 CREATE TABLE `GameCategoryMap`
 (
-  `gamecategorymap_id` int PRIMARY KEY,
+  `gamecategorymap_id` int AUTO_INCREMENT PRIMARY KEY,
   `game_id` int,
   `category_id` int,
   `create_date` datetime,
   `modify_date` datetime
 );
 
-CREATE TABLE `Player`
+CREATE TABLE `Players`
 (
-  `player_id` int PRIMARY KEY,
+  `player_id` int AUTO_INCREMENT PRIMARY KEY,
   `Player` varchar(255),
   `create_date` datetime,
   `modify_date` datetime
 );
 
-CREATE TABLE `SpeedRun`
+CREATE TABLE `SpeedRuns`
 (
-  `speedrun_id` int PRIMARY KEY,
+  `speedrun_id` int AUTO_INCREMENT PRIMARY KEY,
   `game_id` int,
   `player_id` int,
   `duration` time,
@@ -44,10 +44,10 @@ CREATE TABLE `SpeedRun`
   `modify_date` datetime
 );
 
-ALTER TABLE `GameCategoryMap` ADD FOREIGN KEY (`game_id`) REFERENCES `Game` (`game_id`);
+ALTER TABLE `GameCategoryMap` ADD FOREIGN KEY (`game_id`) REFERENCES `Games` (`game_id`);
 
-ALTER TABLE `GameCategoryMap` ADD FOREIGN KEY (`category_id`) REFERENCES `Category` (`category_id`);
+ALTER TABLE `GameCategoryMap` ADD FOREIGN KEY (`category_id`) REFERENCES `Categories` (`category_id`);
 
-ALTER TABLE `SpeedRun` ADD FOREIGN KEY (`game_id`) REFERENCES `Game` (`game_id`);
+ALTER TABLE `SpeedRuns` ADD FOREIGN KEY (`game_id`) REFERENCES `Games` (`game_id`);
 
-ALTER TABLE `SpeedRun` ADD FOREIGN KEY (`player_id`) REFERENCES `Player` (`player_id`);
+ALTER TABLE `SpeedRuns` ADD FOREIGN KEY (`player_id`) REFERENCES `Players` (`player_id`);
