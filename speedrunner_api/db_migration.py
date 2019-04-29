@@ -1,33 +1,21 @@
 import csv
 from datetime import datetime
-from sqlalchemy import MetaData
-from sqlalchemy import create_engine
 from speedrunner_api.config import config
+from speedrunner_api.models import Database
+from speedrunner_api.models import Game, Category
 
 
-class Migration(object):
+class Migration(Database):
+
     def __init__(self):
-        # Reflection
-        self.engine = create_engine(
-            "mysql+pymysql://{}:{}@localhost/{}".format(
-                config.admin_usr,
-                config.admin_pwd,
-                config.database
-            )
-        )
-        meta = MetaData()
-        meta.reflect(bind=self.engine)
-
-        # Tables
-        self.games_table = meta.tables['Games']
-        self.categories_table = meta.tables['Categories']
-        self.players_table = meta.tables['Players']
+        super().__init__()
 
     def exec_migration(self):
         """Initiates Migration"""
         self._insert_records('Games')
         self._insert_records('Categories')
         self._insert_records('Players')
+        self._insert_records('GameCategoryMap')
 
     def _csv_to_obj(self):
         """Converts CSV data into object
@@ -73,6 +61,32 @@ class Migration(object):
         players_obj = [{'player': player} for player in players]
         return players_obj
 
+    def _make_gamecategorymap(self):
+        data_obj = self._csv_to_obj()
+        mapping = [{
+            'game': row['Game'],
+            'categories': self._clean_categories([row['Categories']])
+         } for row in data_obj]
+        # flatten
+        flat_mapping = []
+        for gcm in mapping:
+            for category in gcm['categories']:
+                flat_mapping.append((gcm['game'], category))
+        # reduce/map
+        gc_map = list(set(flat_mapping))
+        gc_map = [{'game': x[0], 'category': x[1]} for x in gc_map]
+        # re-map with database ids
+        gamecategorymap_obj = []
+        for gc in gc_map:
+            game_id = Game(gc['game']).game_id
+            category_id = Category(gc['category']).category_id
+
+            gamecategorymap_obj.append({
+                'game_id': game_id,
+                'category_id': category_id
+            })
+        return gamecategorymap_obj
+
     def _clean_categories(self, categories):
         """Cleans up concatenated category strings
 
@@ -100,12 +114,15 @@ class Migration(object):
         elif target_table == 'Players':
             table = self.players_table
             record_obj = self._make_players()
+        elif target_table == 'GameCategoryMap':
+            table = self.gamecategorymap_table
+            record_obj = self._make_gamecategorymap()
 
         # Add timestamps
         for obj in record_obj:
             obj['create_date'] = datetime.now()
             obj['modify_date'] = datetime.now()
 
-        conn = self.engine.connect()
+        conn = super().make_connection()
         conn.execute(table.insert(), record_obj)
-        conn.close()
+        super().destroy_connection(conn)
