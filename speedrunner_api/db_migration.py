@@ -34,8 +34,6 @@ class Migration(object):
     def _make_gameslist(self):
         """A unique list of games
 
-        Params:
-            data_obj:= list<OrderedDict>
         Returns:
             games:= list<dict<str>>
         """
@@ -45,6 +43,7 @@ class Migration(object):
         return games_obj
 
     def _insert_games(self):
+        """Insert game titles into database"""
         games_obj = self._make_gameslist()
         for obj in games_obj:
             obj['create_date'] = datetime.now()
