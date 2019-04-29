@@ -29,7 +29,7 @@ CREATE TABLE `GameCategoryMap`
 CREATE TABLE `Players`
 (
   `player_id` int AUTO_INCREMENT PRIMARY KEY,
-  `Player` varchar(255),
+  `player` varchar(255),
   `create_date` datetime,
   `modify_date` datetime
 );
