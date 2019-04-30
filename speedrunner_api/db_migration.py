@@ -37,7 +37,7 @@ class Migration(Database):
         """
         data_obj = self._csv_to_obj()
         games = list(set([row['Game'] for row in data_obj]))
-        games_obj = [{'game': game} for game in games]
+        games_obj = [Game(game).serialize() for game in games]
         return games_obj
 
     def _make_categories(self):
@@ -47,9 +47,9 @@ class Migration(Database):
             categories_obj:= list<dict<str>>
         """
         data_obj = self._csv_to_obj()
-        categories = [row['Categories'] for row in data_obj]
-        cleaned_categories = self._clean_categories(categories)
-        categories_obj = [{'category': cc} for cc in cleaned_categories]
+        _categories = [row['Categories'] for row in data_obj]
+        categories = self._clean_categories(_categories)
+        categories_obj = [Category(cc).serialize() for cc in categories]
         return categories_obj
 
     def _make_players(self):
@@ -60,7 +60,7 @@ class Migration(Database):
         """
         data_obj = self._csv_to_obj()
         players = list(set([row['Player'] for row in data_obj]))
-        players_obj = [{'player': player} for player in players]
+        players_obj = [Player(player).serialize() for player in players]
         return players_obj
 
     def _make_gamecategorymap(self):

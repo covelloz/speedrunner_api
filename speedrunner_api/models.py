@@ -45,6 +45,9 @@ class Game(Database):
         super().destroy_connection(conn)
         return game_id
 
+    def serialize(self):
+        return {'game': self.game}
+
 
 class Category(Database):
     def __init__(self, category):
@@ -59,6 +62,9 @@ class Category(Database):
         super().destroy_connection(conn)
         return category_id
 
+    def serialize(self):
+        return {'category': self.category}
+
 
 class Player(Database):
     def __init__(self, player):
@@ -72,6 +78,9 @@ class Player(Database):
         player_id = conn.execute(sql, self.player).fetchall()[0][0]
         super().destroy_connection(conn)
         return player_id
+
+    def serialize(self):
+        return {'player': self.player}
 
 
 class GameCategoryMap(object):
