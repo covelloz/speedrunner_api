@@ -2,7 +2,8 @@ import csv
 from datetime import datetime
 from speedrunner_api.config import config
 from speedrunner_api.models import Database
-from speedrunner_api.models import Game, Category
+from speedrunner_api.models import Game, Category, Player
+from speedrunner_api.models import GameCategoryMap, SpeedRun
 
 
 class Migration(Database):
@@ -16,6 +17,7 @@ class Migration(Database):
         self._insert_records('Categories')
         self._insert_records('Players')
         self._insert_records('GameCategoryMap')
+        self._insert_records('SpeedRuns')
 
     def _csv_to_obj(self):
         """Converts CSV data into object
@@ -62,6 +64,11 @@ class Migration(Database):
         return players_obj
 
     def _make_gamecategorymap(self):
+        """Create a list of GameCategoryMap objects
+
+        Returns:
+            gamecategorymap_obj:= list<dict<str>>
+        """
         data_obj = self._csv_to_obj()
         mapping = [{
             'game': row['Game'],
@@ -73,19 +80,28 @@ class Migration(Database):
             for category in gcm['categories']:
                 flat_mapping.append((gcm['game'], category))
         # reduce/map
-        gc_map = list(set(flat_mapping))
-        gc_map = [{'game': x[0], 'category': x[1]} for x in gc_map]
-        # re-map with database ids
-        gamecategorymap_obj = []
-        for gc in gc_map:
-            game_id = Game(gc['game']).game_id
-            category_id = Category(gc['category']).category_id
-
-            gamecategorymap_obj.append({
-                'game_id': game_id,
-                'category_id': category_id
-            })
+        gamecategorymap = list(set(flat_mapping))
+        gamecategorymap_obj = [
+            GameCategoryMap(game=x[0], category=x[1]).serialize()
+            for x in gamecategorymap
+        ]
         return gamecategorymap_obj
+
+    def _make_speedruns(self):
+        """Create a list of SpeedRuns objects
+
+        Returns:
+            speedrun_obj:= list<dict<str>>
+        """
+        data_obj = self._csv_to_obj()
+        speedruns = [
+            SpeedRun(
+                row['Game'],
+                row['Player'],
+                row['Duration']).serialize()
+            for row in data_obj
+        ]
+        return speedruns
 
     def _clean_categories(self, categories):
         """Cleans up concatenated category strings
@@ -97,7 +113,7 @@ class Migration(Database):
         """
         _categories = []
         for category in categories:
-            cat_split = category.replace('%', '').split(',')
+            cat_split = category.split(',')
             for cat in cat_split:
                 _categories.append(cat.strip())
         cleaned_categories = list(set(_categories))
@@ -117,6 +133,9 @@ class Migration(Database):
         elif target_table == 'GameCategoryMap':
             table = self.gamecategorymap_table
             record_obj = self._make_gamecategorymap()
+        elif target_table == 'SpeedRuns':
+            table = self.speedruns_table
+            record_obj = self._make_speedruns()
 
         # Add timestamps
         for obj in record_obj:

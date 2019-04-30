@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from speedrunner_api.config import config
@@ -22,6 +23,7 @@ class Database(object):
         self.categories_table = meta.tables['Categories']
         self.players_table = meta.tables['Players']
         self.gamecategorymap_table = meta.tables['GameCategoryMap']
+        self.speedruns_table = meta.tables['SpeedRuns']
 
     def make_connection(self):
         return self.engine.connect()
@@ -45,7 +47,6 @@ class Game(Database):
 
 
 class Category(Database):
-
     def __init__(self, category):
         super().__init__()
         self.category = category
@@ -57,3 +58,43 @@ class Category(Database):
         category_id = conn.execute(sql, self.category).fetchall()[0][0]
         super().destroy_connection(conn)
         return category_id
+
+
+class Player(Database):
+    def __init__(self, player):
+        super().__init__()
+        self.player = player
+
+    @property
+    def player_id(self):
+        conn = super().make_connection()
+        sql = 'SELECT player_id FROM Players WHERE player=%s'
+        player_id = conn.execute(sql, self.player).fetchall()[0][0]
+        super().destroy_connection(conn)
+        return player_id
+
+
+class GameCategoryMap(object):
+    def __init__(self, game, category):
+        self.game = Game(game)
+        self.category = Category(category)
+
+    def serialize(self):
+        return {
+            'game_id': self.game.game_id,
+            'category_id': self.category.category_id
+        }
+
+
+class SpeedRun(object):
+    def __init__(self, game, player, duration):
+        self.game = Game(game)
+        self.player = Player(player)
+        self.duration = duration
+
+    def serialize(self):
+        return {
+            'game_id': self.game.game_id,
+            'player_id': self.player.player_id,
+            'duration': self.duration
+        }
