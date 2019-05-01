@@ -20,7 +20,10 @@ class Search(Database):
         else:
             results = conn.execute(sql, params)
         keys = results.keys()
-        response = [dict(zip(keys, result)) for result in results.fetchall()]
+        response = [
+            dict(zip(keys, [str(column) for column in result]))
+            for result in results.fetchall()
+        ]
         super().destroy_connection(conn)
         return response
 
@@ -29,7 +32,7 @@ class Search(Database):
         response = self._exec_query(sql)
         return response
 
-    def games_in_category(self, category):
+    def all_games_by_category(self, category):
         sql = '''
             SELECT
                 g.game_id, g.game
