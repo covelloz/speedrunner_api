@@ -16,6 +16,8 @@ rm Miniconda3-latest-Linux-x86_64.sh
 /opt/conda/bin/conda create --name=speedrunner python=3.6
 /opt/conda/envs/speedrunner/bin/pip install -r /vagrant/requirements.txt
 /opt/conda/envs/speedrunner/bin/pip install gunicorn
+# migrate data
+/opt/conda/envs/speedrunner/bin/python /vagrant/migrate.py
 # configure web service
 cp /vagrant/server/api.service /etc/systemd/system/
 systemctl start api.service
