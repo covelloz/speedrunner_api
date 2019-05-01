@@ -5,6 +5,6 @@ class Configuration(object):
         self.admin_usr = 'speedrunner_admin'
         self.admin_pwd = 'for_glory'
         self.database = 'speedrunner'
-        self.csv_path = 'data/speedrunner.csv'
+        self.csv_abspath = '/vagrant/data/speedrunner.csv'
 
 config = Configuration()

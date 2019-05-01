@@ -25,7 +25,7 @@ class Migration(Database):
         Returns:
             data_obj:= list<OrderedDict>
         """
-        with open(config.csv_path) as f:
+        with open(config.csv_abspath) as f:
             data_obj = list(csv.DictReader(f))
         return data_obj
 
