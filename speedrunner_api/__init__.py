@@ -7,7 +7,7 @@ __author__ = 'Michael Covello'
 
 
 app = Flask(__name__)
-app.register_blueprint(api)
+app.register_blueprint(api, url_prefix='/speedrunner')
 
 
 def run_app(config):
