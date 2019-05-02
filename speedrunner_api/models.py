@@ -1,9 +1,10 @@
-
 import logging
 from datetime import datetime
 from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from speedrunner_api.config import config
+
+logger = logging.getLogger('speedrunner_api')
 
 
 class Database(object):
@@ -60,11 +61,11 @@ class Game(Database):
             super().insert_record(self.games_table, self)
             message = 'Record successfully added: game_id = {}'\
                 .format(self.game_id)
-            logging.info(message)
+            logger.info(message)
         else:
             message = 'Record attempted but exists: game_id = {}'\
                 .format(self.game_id)
-            logging.info(message)
+            logger.info(message)
 
     def serialize(self):
         return {'game': self.game}
@@ -89,11 +90,11 @@ class Category(Database):
             super().insert_record(self.categories_table, self)
             message = 'Record successfully added: category_id = {}'\
                 .format(self.category_id)
-            logging.info(message)
+            logger.info(message)
         else:
             message = 'Record attempted but exists: category_id = {}'\
                 .format(self.category_id)
-            logging.info(message)
+            logger.info(message)
 
     def serialize(self):
         return {'category': self.category}
@@ -118,11 +119,11 @@ class Player(Database):
             super().insert_record(self.players_table, self)
             message = 'Record successfully added: player_id = {}'\
                 .format(self.player_id)
-            logging.info(message)
+            logger.info(message)
         else:
             message = 'Record attempted but exists: player_id = {}'\
                 .format(self.player_id)
-            logging.info(message)
+            logger.info(message)
 
     def serialize(self):
         return {'player': self.player}
@@ -165,15 +166,15 @@ class GameCategoryMap(Database):
             super().insert_record(self.gamecategorymap_table, self)
             message = 'Record successfully added: gamecategorymap_id = {}'\
                 .format(self.gamecategorymap_id)
-            logging.info(message)
+            logger.info(message)
         elif validate != 'valid':
             message = 'Record attempted but {}'\
                 .format(validate)
-            logging.info(message)
+            logger.info(message)
         else:
             message = 'Record attempted but exists: gamecategorymap_id = {}'\
                 .format(self.gamecategorymap_id)
-            logging.info(message)
+            logger.info(message)
 
     def serialize(self):
         return {
@@ -224,15 +225,15 @@ class SpeedRun(Database):
             super().insert_record(self.speedruns_table, self)
             message = 'Record successfully added: speedrun_id = {}'\
                 .format(self.speedrun_id)
-            logging.info(message)
+            logger.info(message)
         elif validate != 'valid':
             message = 'Record attempted but {}'\
                 .format(validate)
-            logging.info(message)
+            logger.info(message)
         else:
             message = 'Record attempted but exists: speedrun_id = {}'\
                 .format(self.speedrun_id)
-            logging.info(message)
+            logger.info(message)
 
     def serialize(self):
         return {
