@@ -62,10 +62,12 @@ class Game(Database):
             message = 'Record successfully added: game_id = {}'\
                 .format(self.game_id)
             logger.info(message)
+            return message
         else:
             message = 'Record attempted but exists: game_id = {}'\
                 .format(self.game_id)
             logger.info(message)
+            return message
 
     def serialize(self):
         return {'game': self.game}
@@ -91,10 +93,12 @@ class Category(Database):
             message = 'Record successfully added: category_id = {}'\
                 .format(self.category_id)
             logger.info(message)
+            return message
         else:
             message = 'Record attempted but exists: category_id = {}'\
                 .format(self.category_id)
             logger.info(message)
+            return message
 
     def serialize(self):
         return {'category': self.category}
@@ -120,10 +124,12 @@ class Player(Database):
             message = 'Record successfully added: player_id = {}'\
                 .format(self.player_id)
             logger.info(message)
+            return message
         else:
             message = 'Record attempted but exists: player_id = {}'\
                 .format(self.player_id)
             logger.info(message)
+            return message
 
     def serialize(self):
         return {'player': self.player}
@@ -131,6 +137,7 @@ class Player(Database):
 
 class GameCategoryMap(Database):
     def __init__(self, game, category):
+        super().__init__()
         self.game = Game(game)
         self.category = Category(category)
 
@@ -149,32 +156,20 @@ class GameCategoryMap(Database):
         gamecategorymap_id = result[0][0] if result else None
         return gamecategorymap_id
 
-    def _validate_record(self):
-        game = self.game.game
-        cateogry = self.category.category
-        if self.game.game_id is None:
-            return 'no existing Game record for: {}'.format(game)
-        elif self.category.category_id is None:
-            return 'no existing Category record for: {}'.format(cateogry)
-        else:
-            return 'valid'
-
     def insert_record(self):
-        validate = self._validate_record()
-
-        if self.gamecategorymap_id is None and validate == 'valid':
+        if self.gamecategorymap_id is None:
+            self.game.insert_record()
+            self.category.insert_record()
             super().insert_record(self.gamecategorymap_table, self)
             message = 'Record successfully added: gamecategorymap_id = {}'\
                 .format(self.gamecategorymap_id)
             logger.info(message)
-        elif validate != 'valid':
-            message = 'Record attempted but {}'\
-                .format(validate)
-            logger.info(message)
+            return message
         else:
             message = 'Record attempted but exists: gamecategorymap_id = {}'\
                 .format(self.gamecategorymap_id)
             logger.info(message)
+            return message
 
     def serialize(self):
         return {
@@ -185,6 +180,7 @@ class GameCategoryMap(Database):
 
 class SpeedRun(Database):
     def __init__(self, game, player, duration):
+        super().__init__()
         self.game = Game(game)
         self.player = Player(player)
         self.duration = duration
@@ -208,32 +204,20 @@ class SpeedRun(Database):
         speedrun_id = result[0][0] if result else None
         return speedrun_id
 
-    def _validate_record(self):
-        game = self.game.game
-        player = self.player.player
-        if self.game.game_id is None:
-            return 'no existing Game record for: {}'.format(game)
-        elif self.player.player_id is None:
-            return 'no existing Player record for: {}'.format(player)
-        else:
-            return 'valid'
-
     def insert_record(self):
-        validate = self._validate_record()
-
-        if self.speedrun_id is None and validate == 'valid':
+        if self.speedrun_id is None:
+            self.game.insert_record()
+            self.player.insert_record()
             super().insert_record(self.speedruns_table, self)
             message = 'Record successfully added: speedrun_id = {}'\
                 .format(self.speedrun_id)
             logger.info(message)
-        elif validate != 'valid':
-            message = 'Record attempted but {}'\
-                .format(validate)
-            logger.info(message)
+            return message
         else:
             message = 'Record attempted but exists: speedrun_id = {}'\
                 .format(self.speedrun_id)
             logger.info(message)
+            return message
 
     def serialize(self):
         return {
