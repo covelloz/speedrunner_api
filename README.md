@@ -5,7 +5,7 @@ Written in Python 3.6 utilizing Flask microframework and SQLAlchemy with a MySQL
 ## Setting up Development Environment
 In order to facilitate a cross-platform development environment, Vagrant (v2.2.4) and Virtualbox (v6.0.6) are used *. Please download and install both.
 
-**Vagrant:** https://www.vagrantup.com/downloads.html\
+**Vagrant:** https://www.vagrantup.com/downloads.html \
 **VirtualBox:** https://www.virtualbox.org/wiki/Downloads
 
 
