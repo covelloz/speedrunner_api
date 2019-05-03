@@ -12,7 +12,7 @@ class Search(Database):
             params:= <None>/<str>/list<str>
 
         Returns:
-            response:= list<dict<variant>> (json serializable)
+            response:= list<dict<str>> (json serializable)
         """
         conn = super().make_connection()
         if params is None:
