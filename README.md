@@ -35,26 +35,26 @@ Replace %s with a *URL encoded string*.\
 If you're not familiar with URL encodings, reference this [guide](https://www.w3schools.com/tags/ref_urlencode.asp)
 
 **GET**
-* List all games in database: http://locahost:8080/all-games
-* List all games in a specific category: http://localhost:8080/all-games/category/%s \
+* List all games in database: http://locahost:8080/speedrunner/all-games
+* List all games in a specific category: http://localhost:8080/speedrunner/all-games/category/%s \
 *Examples*
-    * http://localhost:8080/all-games/Any%25
-    * http://localhost:8080/all-games/Any%25%20History%20Books
-* List top 10 speedruns of a specific game: http://localhost:8080/top/speedruns/game/%s \
+    * http://localhost:8080/speedrunner/all-games/Any%25
+    * http://localhost:8080/speedrunner/all-games/Any%25%20History%20Books
+* List top 10 speedruns of a specific game: http://localhost:8080/speedrunner/top/speedruns/game/%s \
 *Examples*
-    * http://localhost:8080/top/speedruns/game/Dark%20Souls
-* List all speedruns of a specific player: http://localhost:8080/all/speedruns/player/%s \
+    * http://localhost:8080/speedrunner/top/speedruns/game/Dark%20Souls
+* List all speedruns of a specific player: http://localhost:8080/speedrunner/all/speedruns/player/%s \
 *Examples*
-    * http://localhost:8080/top/speedruns/player/Madeline
-    * http://localhost:8080/top/speedruns/player/Mr.%20X
-* List top players in a specific category: http://localhost:8080/top/players/category/%s \
+    * http://localhost:8080/speedrunner/top/speedruns/player/Madeline
+    * http://localhost:8080/speedrunner/top/speedruns/player/Mr.%20X
+* List top players in a specific category: http://localhost:8080/speedrunner/top/players/category/%s \
 *Examples*
-    * http://localhost:8080/top/players/category/Any%
-    * http://localhost:8080/top/players/category/1xx%
+    * http://localhost:8080/speedrunner/top/players/category/Any%
+    * http://localhost:8080/speedrunner/top/players/category/1xx%
 
 **POST**\
 Post requests are requested via JSON payloads.\
-You can do this programatically or with the help of REST clients such as [Postman](https://www.getpostman.com/). The HTTP header must be contain a Content-Type of **application/json**. All examples below are written in Python 3.6.
+You can do this programatically or with the help of REST clients such as [Postman](https://www.getpostman.com/). The HTTP header must contain a Content-Type of **application/json**. All examples below are written in Python 3.6.
 
 Add a game to the database
 ```python
