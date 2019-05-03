@@ -3,7 +3,8 @@ A RESTful API to store and query speedrun times.\
 Written in Python 3.6 utilizing Flask microframework and SQLAlchemy with a MySQL database backend.
 
 ## Setting up Development Environment
-In order to facilitate a cross-platform development environment, Vagrant (v2.2.4) and Virtualbox (v6.0.6) are used *. Please download and install both.
+In order to facilitate a cross-platform development environment, Vagrant (v2.2.4) and Virtualbox (v6.0.6) are used *.\
+Please download and install both.
 
 **Vagrant:** https://www.vagrantup.com/downloads.html \
 **VirtualBox:** https://www.virtualbox.org/wiki/Downloads
@@ -30,23 +31,23 @@ vagrant ssh
 All applications files are located at synced folder: /vagrant
 
 ## Using the API
-Replace %s with the category as a *URL encoded string*.\
+Replace %s with a *URL encoded string*.\
 If you're not familiar with URL encodings, reference this [guide](https://www.w3schools.com/tags/ref_urlencode.asp)
 
 **GET**
 * List all games in database: http://locahost:8080/all-games
-* List all games in a specific category: http://localhost:8080/all-games/category/%s\
+* List all games in a specific category: http://localhost:8080/all-games/category/%s \
 *Examples*
     * http://localhost:8080/all-games/Any%25
     * http://localhost:8080/all-games/Any%25%20History%20Books
-* List top 10 speedruns of a specific game: http://localhost:8080/top/speedruns/game/%s\
+* List top 10 speedruns of a specific game: http://localhost:8080/top/speedruns/game/%s \
 *Examples*
     * http://localhost:8080/top/speedruns/game/Dark%20Souls
-* List all speedruns of a specific player: http://localhost:8080/all/speedruns/player/%s\
+* List all speedruns of a specific player: http://localhost:8080/all/speedruns/player/%s \
 *Examples*
     * http://localhost:8080/top/speedruns/player/Madeline
     * http://localhost:8080/top/speedruns/player/Mr.%20X
-* List top players in a specific category: http://localhost:8080/top/players/category/%s\
+* List top players in a specific category: http://localhost:8080/top/players/category/%s \
 *Examples*
     * http://localhost:8080/top/players/category/Any%
     * http://localhost:8080/top/players/category/1xx%
